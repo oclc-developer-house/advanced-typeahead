@@ -1,26 +1,53 @@
-$(document).ready(function() {
-  
-  var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-    'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-    'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-    'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ];
+var entityTypes = {
+  personal: 'People',
+  corporate: 'Organizations',
+  geographic: 'Places',
+  subject: 'Topics',
+  uniformtitlework: 'Works',
+  uniformtitleexpression: 'Expressions',
+}
 
-  // constructs the suggestion engine
-  var suggest = new Bloodhound({
+var filterResponse = function(response) {
+  var ret_array = [];
+  var entities = {};
+  for (var i=0; i<response.result.length; i++) {
+    var nameType = entityTypes[response.result[i].nametype];
+    var term = response.result[i].term;
+    if (entities[nameType] !== 'undefined') {
+      if (!entities[nameType]) {
+        entities[nameType] = [];
+      }
+      entities[nameType].push(term);
+    }
+  }
+  for (key in entities) {
+    for (var i=0; i<entities[key].length; i++) {
+      var hidden = 'hidden'
+      if (i == 0) {
+        hidden = ''
+      }
+      ret_array.push({value: entities[key][i], nameType: key, hideHeader: hidden});
+    }
+  }
+  return ret_array;
+};
+
+
+$(document).ready(function() {
+
+  var suggestEngine = new Bloodhound({
+    name: 'identities',
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    // `states` is an array of state names defined in "The Basics"
-    local: $.map(states, function(state) { return { value: state }; })
+    remote: {
+      ajax: {dataType: 'jsonp'},
+      url: 'http://viaf.org/viaf/AutoSuggest?query=%QUERY',
+      filter: filterResponse
+    }
   });
  
   // kicks off the loading/processing of `local` and `prefetch`
-  suggest.initialize();
+  suggestEngine.initialize();
  
   $('#typeahead .search-input').typeahead({
     hint: true,
@@ -28,10 +55,11 @@ $(document).ready(function() {
     minLength: 1
   },
   {
-    name: 'states',
+    name: 'indentities',
     displayKey: 'value',
-    // `ttAdapter` wraps the suggestion engine in an adapter that
-    // is compatible with the typeahead jQuery plugin
-    source: suggest.ttAdapter()
+    source: suggestEngine.ttAdapter(),
+    templates: {
+      suggestion: Handlebars.compile('<h3 class="{{hideHeader}}">{{nametype}}</h3><span class="term">{{value}}</span>')
+    }
   });
 });
