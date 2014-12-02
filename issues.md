@@ -1,3 +1,6 @@
+Issues
+======
+
 Issue: Using the VIAF Autosuggest API, we can't get back a decent variety of entity types when we search. Part of the problem, or maybe a symptom of the problem, is that things like titles seem to be tied to personal names. So, the "term" property for one of the items that gets returned may be a title, but the entity (e.g., the one identified by the various IDs in the response) is a person.
 
 Example:
