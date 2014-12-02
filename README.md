@@ -1,4 +1,4 @@
-#Advanced Auto Complete
+#Advanced Type Ahead
 
 ## User Story:
 
