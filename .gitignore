@@ -1,3 +1,5 @@
 # Ignore IDE files
 .idea/
 *.iml
+*.pyc
+backend/backend/settings/authentication.py
