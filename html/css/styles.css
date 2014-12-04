@@ -65,3 +65,10 @@ span.twitter-typeahead {
 .input-group.input-group-sm span.twitter-typeahead .tt-dropdown-menu {
   top: 28px !important;
 }
+
+#results {
+  line-height: 4ex;
+}
+#results span.result {
+  padding-right: 30px;
+}

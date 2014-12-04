@@ -15,31 +15,34 @@ var getUrlParam = function(name) {
 /*Templates*/
 var templates = {
   suggestion: '<h3 class="{{hideHeader}}">{{nameType}}</h3><div class="term">{{value}}</div>',
+  result: '<span class="result"><a href="{{id}}">{{label}}</a></span>'
 }
 
 
 /*View Logic*/
 
+var selectors = {
+  searchform: '#typeahead',
+  searchbox: '#typeahead .search-input',
+  searchvalue: '#typeahead .search-input.tt-input',
+  results: '#results'
+}
+
 // searchBoxView--not really a view
 var searchBoxView = {
-  selectors: {
-    searchform: '#typeahead',
-    searchbox: '#typeahead .search-input',
-    searchvalue: '#typeahead .search-input.tt-input'
-  },
 
   initialize: function() {
-    $(this.selectors.searchform).on('submit', {view: this}, this.search);
+    $(selectors.searchform).on('submit', this.search);
   },
 
   renderValue: function(query) {
     if (query) {
-      $(this.selectors.searchbox).val(query);
+      $(selectors.searchbox).val(query);
     }
   },
 
   renderTypeahead: function() {
-    $(this.selectors.searchbox).advancedViafTypeahead({
+    $(selectors.searchbox).advancedViafTypeahead({
       templates: {
         suggestion: Handlebars.compile(templates.suggestion)
       }  
@@ -53,46 +56,46 @@ var searchBoxView = {
 
   search: function(ev) {
     ev.preventDefault();
-    var view = ev.data.view;
-    var query = $(view.selectors.searchvalue).val();
+    var query = $(selectors.searchvalue).val();
     history.pushState({}, '', '?q=' + query);
-    $(view.selectors.searchbox).typeahead('close');
-
+    $(selectors.searchbox).typeahead('close');
   },
 }
 
 // result view
 var resultView = {
-  selectors: {
-    results: '#results',
-  },
 
   initialize: function() {
-    $(searchBoxView.selectors.searchform).on('submit', {view: this}, this.submitHandler);
+    $(selectors.searchform).on('submit', {view: this}, this.submitHandler);
   },
 
   submitHandler: function(ev) {
     var view = ev.data.view;
-    var query = $(searchBoxView.selectors.searchvalue).val();
+    var query = $(selectors.searchvalue).val();
     view.getData(query);
   },
 
   getData: function(query) {
     var url = settings.SUBJECTS_REQUEST_URL + '?' + settings.SUBJECTS_QUERY_PARAM + '=' + query;
-    var that = this;
     $.ajax({
-      'url': url,
-      'type': 'GET',
-      'datatype': 'json',
-      'error': function(jqXHR, textStatus, errorThrown) {
-        $(that.selectors.results).html('<div>Oops, there was an error retrieving data from the server!</div>');
+      url: url,
+      type: 'GET',
+      datatype: 'json',
+      cache: true,
+      error: function(jqXHR, textStatus, errorThrown) {
+        $(selectors.results).html('<div>Oops, there was an error retrieving data from the server!</div>');
       },
-      'success': this.render
+      success: this.render
     });
   },
 
   render: function(data) {
-    console.log(data);
+    $(selectors.results).html('');
+    var results_template = Handlebars.compile(templates.result);
+    $.each(data.subjects, function(i, subject) {
+      var context = {'id': subject.id, 'label': subject.label};
+      $(selectors.results).append(results_template(context));
+    });
   }
 }
 
