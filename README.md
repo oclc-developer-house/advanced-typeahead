@@ -22,3 +22,5 @@ Requirements:
     * sudo pip install markdown (optional)
 * [Requests module](http://docs.python-requests.org/en/latest/user/install/)
     * sudo pip install requests
+* [RDF Library](http://rdflib.readthedocs.org/en/latest/)
+    * sudo pip install rdflib
