@@ -1,3 +1,9 @@
+/*Settings*/
+var settings = {
+  SUBJECTS_REQUEST_URL: 'http://localhost:8000/discovery/subjects',
+  SUBJECTS_QUERY_PARAM: 'q'
+}
+
 /*Utility Functions*/
 
 var getUrlParam = function(name) {
@@ -51,15 +57,42 @@ var searchBoxView = {
     var query = $(view.selectors.searchvalue).val();
     history.pushState({}, '', '?q=' + query);
     $(view.selectors.searchbox).typeahead('close');
+
   },
 }
 
 // result view
 var resultView = {
-  selector: '#result',
+  selectors: {
+    results: '#results',
+  },
 
-  render: function() {
+  initialize: function() {
+    $(searchBoxView.selectors.searchform).on('submit', {view: this}, this.submitHandler);
+  },
 
+  submitHandler: function(ev) {
+    var view = ev.data.view;
+    var query = $(searchBoxView.selectors.searchvalue).val();
+    view.getData(query);
+  },
+
+  getData: function(query) {
+    var url = settings.SUBJECTS_REQUEST_URL + '?' + settings.SUBJECTS_QUERY_PARAM + '=' + query;
+    var that = this;
+    $.ajax({
+      'url': url,
+      'type': 'GET',
+      'datatype': 'json',
+      'error': function(jqXHR, textStatus, errorThrown) {
+        $(that.selectors.results).html('<div>Oops, there was an error retrieving data from the server!</div>');
+      },
+      'success': this.render
+    });
+  },
+
+  render: function(data) {
+    console.log(data);
   }
 }
 
@@ -70,4 +103,8 @@ $(document).ready(function() {
   var query = getUrlParam('q');
   searchBoxView.initialize();
   searchBoxView.render(query);
+  resultView.initialize();
+  if (query) {
+    resultView.getData(query);
+  }
 });
