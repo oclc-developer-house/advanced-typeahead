@@ -1,4 +1,7 @@
+from __future__ import unicode_literals
+
 import requests
+import rdflib
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,8 +27,14 @@ class BibsView(APIView):
         authorization = 'Bearer ' + self.access_token.access_token_string
         r = requests.get(
             url=request_url,
-            headers={'Authorization': authorization, 'Accept': 'application/json'}
+            headers={'Authorization': authorization, 'Accept': 'text/turtle'}
         )
 
-        return Response(r.json())
+        g = rdflib.Graph()
+        result = g.parse(data=r.text, format='turtle')
+        data = ''
+        for s, p, o in g:
+            data = '{}{},{},{}\n'.format(data, s, p, o)
+
+        return Response(data)
 
