@@ -15,7 +15,9 @@ var getUrlParam = function(name) {
 /*Templates*/
 var templates = {
   suggestion: '<h3 class="{{hideHeader}}">{{nameType}}</h3><div class="term">{{value}}</div>',
-  result: '<span class="result"><a href="{{id}}">{{label}}</a></span>'
+  result: '<span class="result"><a href="{{id}}">{{label}}</a></span>',
+  loading: '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div>',
+  err: '<div>Oops, there was an error retrieving data from the server!</div>'
 }
 
 
@@ -64,7 +66,6 @@ var searchBoxView = {
 
 // result view
 var resultView = {
-
   initialize: function() {
     $(selectors.searchform).on('submit', {view: this}, this.submitHandler);
   },
@@ -72,6 +73,7 @@ var resultView = {
   submitHandler: function(ev) {
     var view = ev.data.view;
     var query = $(selectors.searchvalue).val();
+    view.renderLoadingSpinner();
     view.getData(query);
   },
 
@@ -83,10 +85,14 @@ var resultView = {
       datatype: 'json',
       cache: true,
       error: function(jqXHR, textStatus, errorThrown) {
-        $(selectors.results).html('<div>Oops, there was an error retrieving data from the server!</div>');
+        $(selectors.results).html(templates.err);
       },
       success: this.render
     });
+  },
+
+  renderLoadingSpinner: function() {
+    $(selectors.results).html(templates.loading);
   },
 
   render: function(data) {
@@ -108,6 +114,6 @@ $(document).ready(function() {
   searchBoxView.render(query);
   resultView.initialize();
   if (query) {
-    resultView.getData(query);
+    resultView.submitHandler({data: {view: resultView}});
   }
 });
