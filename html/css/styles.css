@@ -51,7 +51,7 @@ span.twitter-typeahead .term {
   padding-left: 10px;
 }
 span.twitter-typeahead {
-  width: 100%;
+  width: 80%;
 }
 .input-group span.twitter-typeahead {
   display: block !important;

@@ -8,19 +8,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
     <script src="scripts/typeahead.bundle.js"></script>
+    <script src="scripts/advanced-viaf-typeahead.js"></script>
     <script src="scripts/main.js"></script>
 </head>
 
 <body>
-    <div class="container" id="main">
+    <div class="page-header container" id="header">
         <h1>Advanced Typeahead Prototype</h1>
+        <form id="typeahead">
+            <div class="form-group">
+                <input class="search-input form-control" type="text" placeholder="Search goes here" />
+                <button class="btn btn-default" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="container" id="main">
         <div class="row">
         <div class="col-xs-12">
-            <form id="typeahead">
-                <div class="form-group">
-                    <input class="search-input form-control" type="text" placeholder="Search goes here" />
-                </div>
-            </form>
         </div>
         </div>
     </div>
