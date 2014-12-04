@@ -11,6 +11,10 @@ import dapi_parser
 
 
 def dapi_make_request(query='', access_token=None, accept_header='application/json'):
+    """
+    Makes request to discovery api and returns results based on the
+    provided accept header.
+    """
     dbIds = '638'
     request_url = 'https://beta.worldcat.org/discovery/bib/search?' + 'q=' + query + '&' + 'dbIds=' + dbIds
     authorization = 'Bearer ' + access_token.access_token_string
@@ -44,11 +48,8 @@ class BibsRDFView(APIView):
 class SubjectsView(APIView):
     access_token = None
     """
-    Searches bibs and returns results as simple json
-        title
-        creator
-        contributors
-        subjects
+    Searches bibs and returns a list of subjects belonging to all
+    results
     """
 
     def get(self, request, format=None):
