@@ -1,0 +1,8 @@
+"""
+Authentication details -- KEEP THIS SECRET
+"""
+
+KEY = 'aCcndeDMjFO9vszkDrB6WJg1UnyTnkn8lLupLKygr0U1KJZoeAittuVjGRywCDdrsxahv2bsjgKq6hLM'
+SECRET = 'EyZfIJdGQXeatxQOjdkQZw=='
+AUTHENTICATING_INSTITUTION_ID = '128807'
+CONTEXT_INSTITUTION_ID = '128807'
