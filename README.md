@@ -24,3 +24,5 @@ Requirements:
     * sudo pip install requests
 * [RDF Library](http://rdflib.readthedocs.org/en/latest/)
     * sudo pip install rdflib
+* [Django CORS Headers](https://pypi.python.org/pypi/django-cors-headers)
+    * sudo pip install django-cors-headers
