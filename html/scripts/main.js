@@ -66,9 +66,7 @@ var searchBoxView = {
   },
 
   renderValue: function(query) {
-    if (query) {
-      $(selectors.searchbox).val(query);
-    }
+    $(selectors.searchbox).val(query);
   },
 
   renderTypeahead: function() {
@@ -124,7 +122,7 @@ var resultView = {
   },
 
   render: function(data) {
-    $(selectors.results).html('');
+    resultView.clearView();
     var results_template = Handlebars.compile(templates.result);
     $.each(data.subjects, function(i, subject) {
       var entity_type = guessEntityType(subject.id);
@@ -136,18 +134,33 @@ var resultView = {
       var query = $(selectors.searchvalue).val();
       $(selectors.results).append(noresults_template({'query': query}));
     }
+  },
+
+  clearView: function() {
+    $(selectors.results).html('');
   }
 }
 
-
 /*And document ready...*/
 $(document).ready(function() {
-  /*First get the query, if there is one.*/
+  //First get the query, if there is one.
   var query = getUrlParam('q');
+  //Then initialize and render the views.
   searchBoxView.initialize();
   searchBoxView.render(query);
   resultView.initialize();
   if (query) {
     resultView.submitHandler({data: {view: resultView}});
   }
+
+  // make sure we rebuild the page on browser navigation
+  $(window).bind("popstate", function (ev) {
+    var query = getUrlParam('q');
+    searchBoxView.renderValue(query);
+    if (query) {
+      resultView.submitHandler({data: {view: resultView}});
+    } else {
+      resultView.clearView();
+    }
+  });
 });
