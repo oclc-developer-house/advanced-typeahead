@@ -66,9 +66,57 @@ span.twitter-typeahead {
   top: 28px !important;
 }
 
+/* Other styles */
+
 #results {
   line-height: 4ex;
 }
 #results span.result {
   padding-right: 30px;
+}
+.query {
+  font-style: italic;
+}
+
+/* entity type / source formatting */
+.result.topic a {
+  color: #5555FF; /*bright blue*/
+  font-weight: bold;
+}
+.result.place a {
+  color: #AA0000; /*red*/
+  font-weight: bold;
+}
+.result.person a {
+  color: #FF5555; /*bright red*/
+  font-weight: bold;
+}
+.result.meeting a {
+  color: #00AAAA; /*cyan*/
+  font-weight: bold;
+}
+.result.event a {
+  color: #AA00AA; /*magenta*/
+  font-weight: bold;
+}
+.result.organization a {
+  color: #00AA00; /*green*/
+  font-weight: bold;
+}
+.result.thing a {
+  color: #FFCC00; /*dark yellow*/
+  font-weight: bold; 
+}
+.result.creativework a {
+  color: #660066; /*dark purple*/
+  font-weight: bold; 
+}
+.result.fast a {
+  color: #444444;
+}
+.result.loc a {
+  color: #888888;
+}
+.result.viaf a {
+  color: #BBBBBB;
 }

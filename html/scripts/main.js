@@ -6,18 +6,46 @@ var settings = {
 
 /*Utility Functions*/
 
+// getUrlParam gets a named URL parameter from the query string and returns the value
 var getUrlParam = function(name) {
-    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+// guessEntityType takes a URI for a subject returned from the OCLC dapi and
+// returns a string representing the entity type, or the source of the URI.
+// URIs like this:
+// http://experiment.worldcat.org/entity/work/data/433936#Topic/authors_american_20th_century
+// have the entity type embedded in a place that can be extracted.
+var guessEntityType = function(uri) {
+  etype = '';
+  sources = {
+    fast: 'http://id.worldcat.org/fast/',
+    loc: 'http://id.loc.gov/authorities/subjects/',
+    viaf: 'http://viaf.org/viaf/'
+  }
+  var match = RegExp('#([A-Z][A-Za-z]+)/').exec(uri);
+  if (match !== null && match && match[1]) {
+    etype = match[1].toLowerCase()
+  } else {
+    for (key in sources) {
+      if (RegExp(sources[key]).exec(uri)) {
+        etype = key;
+        break;
+      }
+    }
+  }
+  return etype;
 }
 
 
 /*Templates*/
 var templates = {
   suggestion: '<h3 class="{{hideHeader}}">{{nameType}}</h3><div class="term">{{value}}</div>',
-  result: '<span class="result"><a href="{{id}}">{{label}}</a></span>',
+  result: '<span class="result {{type}}"><a href="{{id}}">{{label}}</a></span>',
   loading: '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div>',
-  err: '<div>Oops, there was an error retrieving data from the server!</div>'
+  err: '<div>Oops, there was an error retrieving data from the server!</div>',
+  noresults: '<div>Sorry, no results were found for the query <span class="query">{{query}}</span>.</div>'
 }
 
 
@@ -99,9 +127,15 @@ var resultView = {
     $(selectors.results).html('');
     var results_template = Handlebars.compile(templates.result);
     $.each(data.subjects, function(i, subject) {
-      var context = {'id': subject.id, 'label': subject.label};
+      var entity_type = guessEntityType(subject.id);
+      var context = {'id': subject.id, 'label': subject.label, 'type': entity_type};
       $(selectors.results).append(results_template(context));
     });
+    if (data.subjects.length == 0) {
+      var noresults_template = Handlebars.compile(templates.noresults);
+      var query = $(selectors.searchvalue).val();
+      $(selectors.results).append(noresults_template({'query': query}));
+    }
   }
 }
 
