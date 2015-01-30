@@ -7,7 +7,7 @@ form field, which groups returned VIAF headings by entity type.
 Requirements:
 
 typeahead.js
-
+handlebars.js
 
 */
 
@@ -23,6 +23,8 @@ typeahead.js
     uniformtitlework: 'Works',
     uniformtitleexpression: 'Expressions',
   }
+
+  var defaultSuggestTemplate = '<h3 class="{{hideHeader}}">{{nameType}}</h3><div class="term">{{value}}</div>';
 
   /*
   filterResponse is our function that filters the response from VIAF
@@ -71,7 +73,9 @@ typeahead.js
       highlight: false,
       minLength: 3,
       name: 'entities',
-      templates: {}
+      templates: {
+        suggestion: Handlebars.compile(defaultSuggestTemplate)
+      }
     }, options);
 
     /*suggestEngine is our Bloodhound typeahead suggestion object, which

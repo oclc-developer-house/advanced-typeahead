@@ -41,7 +41,6 @@ var guessEntityType = function(uri) {
 
 /*Templates*/
 var templates = {
-  suggestion: '<h3 class="{{hideHeader}}">{{nameType}}</h3><div class="term">{{value}}</div>',
   result: '<span class="result {{type}}"><a href="{{id}}">{{label}}</a></span>',
   loading: '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div>',
   err: '<div>Oops, there was an error retrieving data from the server!</div>',
@@ -70,11 +69,7 @@ var searchBoxView = {
   },
 
   renderTypeahead: function() {
-    $(selectors.searchbox).advancedViafTypeahead({
-      templates: {
-        suggestion: Handlebars.compile(templates.suggestion)
-      }  
-    });
+    $(selectors.searchbox).advancedViafTypeahead();
   },
 
   render: function(query) {
