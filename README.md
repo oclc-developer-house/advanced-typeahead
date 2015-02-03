@@ -48,8 +48,12 @@ Place this on a web server and visit index.html. It also works running it from y
 
 You'll need to rename `backend/backend/settings/authentication_template.py` to `backend/backend/settings/authentication.py` and fill in the blanks with your OCLC WSkey details.
 
-*Running the Django Server:*
+*Run the Django Server:*
 
 Launch the Django dev server by running `backend/devstart.sh`. It's set to listen on `localhost:8000`. 
 
 Note that default Django settings from spinning up a basic project are used, and the secret key is currently included in `settings/base.py`, so under no circumstances should this be used in a production environment as-is.
+
+*Open the web page in the browser*
+
+With the backend running in the Django server, open the file `html/index.html` in your browser to run the example.
