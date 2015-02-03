@@ -18,7 +18,7 @@ Place this on a web server and visit index.html. It also works running it from y
 
 ### Python Django Backend
 
-Requirements:
+*Requirements:*
 
 * [oclc-auth-python](https://github.com/OCLC-Developer-Network/oclc-auth-python)
 * [Django v 1.7](https://docs.djangoproject.com/en/1.7/topics/install/)
@@ -27,7 +27,7 @@ Requirements:
 * [RDF Library](http://rdflib.readthedocs.org/en/latest/)
 * [Django CORS Headers](https://pypi.python.org/pypi/django-cors-headers)
 
-Install the dependencies:
+*Install the dependencies:*
 
     git clone https://github.com/OCLC-Developer-Network/oclc-auth-python.git
     cd oclc-auth-python
@@ -40,15 +40,15 @@ Install the dependencies:
     sudo pip install rdflib
     sudo pip install django-cors-headers
 
-Install the application
+*Install the application:*
 
-    git clone 
+    git clone https://github.com/oclc-developer-house/advanced-typeahead.git
 
-OCLC Discovery API Authorization:
+*OCLC Discovery API Authorization:*
 
 You'll need to rename backend/backend/settings/authentication_template.py to backend/backend/settings/authentication.py and fill in the blanks with your OCLC WSkey details.
 
-Running the Django Server:
+*Running the Django Server:*
 
 Launch the Django dev server by running backend/devstart.sh. It's set to listen on localhost:8000. 
 
