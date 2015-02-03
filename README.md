@@ -16,9 +16,11 @@ Currently the project is in two parts: an HTML/CSS/JS frontend (in the html fold
 
 Place this on a web server and visit index.html. It also works running it from your filesystem. Needed libraries not loaded from a cdn are included in html/scripts.
 
-### Python Django Backend
+### Installing the Application
 
-*Requirements:*
+The application consists of a backend server that makes calls to OCLC web services, and a stand alone web page that offers a text input for searching and displays results.
+
+*Backend Requirements:*
 
 * [oclc-auth-python](https://github.com/OCLC-Developer-Network/oclc-auth-python)
 * [Django v 1.7](https://docs.djangoproject.com/en/1.7/topics/install/)
@@ -44,7 +46,7 @@ Place this on a web server and visit index.html. It also works running it from y
 
 `git clone https://github.com/oclc-developer-house/advanced-typeahead.git`
 
-*OCLC Discovery API Authorization:*
+*Configure the OCLC Discovery API Authorization parameters:*
 
 You'll need to rename `backend/backend/settings/authentication_template.py` to `backend/backend/settings/authentication.py` and fill in the blanks with your OCLC WSkey details.
 
