@@ -42,7 +42,7 @@ Place this on a web server and visit index.html. It also works running it from y
 
 *Install the application:*
 
-    git clone https://github.com/oclc-developer-house/advanced-typeahead.git
+`git clone https://github.com/oclc-developer-house/advanced-typeahead.git`
 
 *OCLC Discovery API Authorization:*
 
