@@ -27,17 +27,22 @@ Requirements:
 * [RDF Library](http://rdflib.readthedocs.org/en/latest/)
 * [Django CORS Headers](https://pypi.python.org/pypi/django-cors-headers)
 
-Copy/paste for easy install:
+Install the dependencies:
 
     git clone https://github.com/OCLC-Developer-Network/oclc-auth-python.git
     cd oclc-auth-python
     sudo python setup.py install
+    cd ..
     sudo pip install Django
     sudo pip install djangorestframework
     sudo pip install markdown
     sudo pip install requests
     sudo pip install rdflib
     sudo pip install django-cors-headers
+
+Install the application
+
+    git clone 
 
 OCLC Discovery API Authorization:
 
